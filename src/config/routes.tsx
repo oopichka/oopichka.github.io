@@ -8,6 +8,7 @@ const preservedRoutes: Partial<Record<string, () => JSX.Element>> = Object.keys(
   PRESERVED
 ).reduce((routes, key) => {
   const path = key.replace(/\/src\/pages\/|\.tsx$/g, "");
+  //@ts-ignore
   return { ...routes, [path]: PRESERVED[key]?.default };
 }, {});
 
@@ -15,7 +16,9 @@ const regularRoutes = Object.keys(ROUTES).reduce<Route[]>((routes, key) => {
   const module = ROUTES[key];
   const route: Route = {
     element: () =>
+      //@ts-ignore
       module().then((mod) => (mod?.default ? <mod.default /> : <></>)),
+    //@ts-ignore
     loader: (...args) => module().then((mod) => mod?.loader?.(...args)),
   };
 
